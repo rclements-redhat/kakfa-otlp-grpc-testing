@@ -26,9 +26,6 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.context.Scope;
 
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-
 import java.util.Properties;
 
 public class MyKafkaProducer {
@@ -39,10 +36,7 @@ public class MyKafkaProducer {
     private static final String BOOTSTRAP_BROKERS = IP_ADDRESS + ":9092";
     
     private static final String KAFKA_TOPIC = "my-topic";
-    private static final String CLIENT_ID = "my-client";
-    private static final String INSTRUMENTATION_NAME = "my-producer";
-    private static final String SERVICE_NAME = "my-service";
-    private static final String OTLP_ENDPOINT = "grpc://" + IP_ADDRESS + ":4317";
+    private static final String OTLP_ENDPOINT = "http://" + IP_ADDRESS + ":4317";
 
     //private static final String JAEGER_HOST = IP_ADDRESS;
     //private static final int JAEGER_PORT = 14250;
@@ -67,7 +61,7 @@ public class MyKafkaProducer {
         System.out.println("Creating record.");
         // create a producer record
         ProducerRecord<String, String> producerRecord =
-                new ProducerRecord<>("my-topic", "hello world");
+                new ProducerRecord<>(KAFKA_TOPIC, "hello world");
 
         Resource resource = Resource.getDefault()
             .merge(Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, "logical-service-name")));
